@@ -1,11 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace TreeViewProject
@@ -17,10 +10,44 @@ namespace TreeViewProject
             InitializeComponent();
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private void AddNode()
         {
-            TreeNode newNode = new TreeNode("[Tree Node]");
-            treeView1.Nodes.Add(newNode);
+            TreeNode newNode = new TreeNode("[New Node]");
+            TreeNode selNode = tv.SelectedNode;
+            if (selNode != null)
+            {
+                selNode.Nodes.Add(newNode);
+                tv.SelectedNode.Expand();
+            } else
+            {
+                tv.Nodes.Add(newNode);
+                tv.SelectedNode = newNode;
+            }
         }
+        private void AddBtn_Click(object sender, EventArgs e)
+        {
+            AddNode();
+        }
+        private void DelBtn_Click(object sender, EventArgs e)
+        {
+            TreeNode selNode = tv.SelectedNode;
+            DialogResult result;
+            if (selNode.Nodes.Count > 0)
+            {
+                DialogResult = MessageBox.Show(
+                    "This node is NOT empty. Deleting it will cause everything inside it disappear. Continue?",
+                    "Warning!",
+                    MessageBoxButtons.YesNo,
+                    MessageBoxIcon.Warning);
+                if (DialogResult == DialogResult.Yes)
+                {
+                    tv.SelectedNode.Remove();
+                }
+            } else
+            {
+                tv.SelectedNode.Remove();
+            }
+        }
+
     }
 }
